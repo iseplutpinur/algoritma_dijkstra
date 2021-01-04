@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algoritma Djikstra</title>
+</head>
+<label for="jmlvertex">Jumlah Vertex</label>
+<input type="number" id="jmlvertex">
+<br>
+<button onclick="btnjmlvertex(this)">Submit</button>
+<br>
+<br>
+<div id="inputvertex">
+
+</div>
+<br>
+<br>
+<div id="inputedge">
+
+
+</div>
+
+
+
+<button onclick="location.reload()">Reload</button>
+<script src="index.js"></script>
+<script>
+    // validasi
+    // Style
+    let vertexlabel = [];
+    let vertexweight = {};
+    function btnjmlvertex(th) {
+        const jmlvertex = document.getElementById("jmlvertex");
+        if (jmlvertex.value >= 3 && jmlvertex.value <= 10) {
+            let strhtml = ``;
+            for (let i = 0; i < jmlvertex.value; i++) {
+                strhtml += `    
+            <label for="labelvertex${i}">Label Vertex ${i + 1}</label>
+            <input type="text" id="labelvertex${i}" class="labelvertex" onkeyup="labelvertexcek(this)"><br>`;
+            }
+            strhtml += `<br><button onclick="btninpvertex(this)">Submit</button>`;
+            document.getElementById("inputvertex").innerHTML = strhtml;
+            jmlvertex.setAttribute("readonly", "");
+            th.disabled = true;
+        } else {
+            if (jmlvertex.value > 10) jmlvertex.value = 10;
+            else if (jmlvertex.value < 3) jmlvertex.value = 3;
+            alert("Jumlah vertex minimal 3 dan maksimal 10");
+        }
+    }
+
+
+    function btninpvertex(th) {
+        vertexlabel = [];
+        let cek = true;
+
+        document.querySelectorAll(".labelvertex").forEach(m => {
+            vertexlabel.push(m.value);
+            if (m.value == "" || m.value.length > 1) cek = false;
+        });
+
+        if (!cek) {
+            alert("Semual Label Vertex Harus Di Isi")
+        } else {
+            document.querySelectorAll(".labelvertex").forEach(m => { m.setAttribute("readonly", ""); });
+            th.disabled = true;
+            let stropt = ``;
+            vertexlabel.forEach(n => {
+                stropt += `<option value="${n}">${n}</option>`;
+            })
+            let strhtml = `
+                <p>Edge 1</p>
+                <label for="edge_1_1">Vertex 1</label>
+                <select id="edge_1_1" onchange="vertex1changed(this)">
+                        ${stropt}
+                </select>
+                <label for="edge_1_2">Vertex 2</label>
+                <select id="edge_1_2" disabled>
+
+                </select>
+                <label for="bobotedge_1">Bobot Edge</label>
+                <input type="number" id="bobotedge_1" disabled>
+            `;
+
+            document.getElementById("inputedge").innerHTML = strhtml;
+        }
+    }
+
+    function labelvertexcek(th = "") {
+        th.value = th.value.toUpperCase();
+        document.querySelectorAll(".labelvertex").forEach(m => {
+            if (m.value != "" && m != th) {
+                if (th.value == m.value) {
+                    th.value = "";
+                    alert(`Label Vertex ${th.value} sudah digunakan`);
+                }
+            }
+        });
+
+        if (th.value.length > 1) th.value = th.value.slice(0, 1);
+    }
+
+    function vertex1changed(th) {
+        let inpedge = th.id.split("_");
+        let inpel = document.getElementById(`edge_${inpedge[1]}_2`);
+        let stropt = ``;
+
+        inpel.disabled = false;
+        vertexlabel.forEach(n => {
+            if (n != th.value) stropt += `<option value="${n}">${n}</option>`;
+        })
+        inpel.innerHTML = stropt;
+        document.getElementById(`bobotedge_${inpedge[1]}`).disabled = false;
+    }
+</script>
+
+<body>
+
+</body>
+
+</html>
