@@ -110,7 +110,6 @@ graph.addEdge("E", "F", 2);
 graph.addEdge("E", "G", 7);
 graph.addEdge("F", "G", 3);
 //  menampilkan isi graph
-console.log(graph.adjacencyList);
 
 // memanggil dijkstra dan mentukan jarak terdekat
 console.log(graph.Dijkstra("A", "G"));

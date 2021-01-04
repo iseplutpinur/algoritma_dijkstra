@@ -30,7 +30,9 @@
     // validasi
     // Style
     let vertexlabel = [];
-    let vertexweight = {};
+    let vertexweight = [];
+    let edgecounter = 1;
+    let jmlvertexs = 0;
     function btnjmlvertex(th) {
         const jmlvertex = document.getElementById("jmlvertex");
         if (jmlvertex.value >= 3 && jmlvertex.value <= 10) {
@@ -44,6 +46,7 @@
             document.getElementById("inputvertex").innerHTML = strhtml;
             jmlvertex.setAttribute("readonly", "");
             th.disabled = true;
+            jmlvertexs = jmlvertex;
         } else {
             if (jmlvertex.value > 10) jmlvertex.value = 10;
             else if (jmlvertex.value < 3) jmlvertex.value = 3;
@@ -72,16 +75,16 @@
             })
             let strhtml = `
                 <p>Edge 1</p>
-                <label for="edge_1_1">Vertex 1</label>
-                <select id="edge_1_1" onchange="vertex1changed(this)">
+                <label for="edge_${edgecounter}_1">Vertex 1</label>
+                <select id="edge_${edgecounter}_1" onclick="vertex1changed(this)">
                         ${stropt}
                 </select>
-                <label for="edge_1_2">Vertex 2</label>
-                <select id="edge_1_2" disabled>
+                <label for="edge_${edgecounter}_2">Vertex 2</label>
+                <select id="edge_${edgecounter}_2" disabled>
 
                 </select>
-                <label for="bobotedge_1">Bobot Edge</label>
-                <input type="number" id="bobotedge_1" disabled>
+                <label for="bobotedge_${edgecounter}">Bobot Edge</label>
+                <input type="number" id="bobotedge_${edgecounter}" disabled onkeyup="addbobotedge(this)">
             `;
 
             document.getElementById("inputedge").innerHTML = strhtml;
@@ -114,6 +117,89 @@
         inpel.innerHTML = stropt;
         document.getElementById(`bobotedge_${inpedge[1]}`).disabled = false;
     }
+
+    function addbobotedge(th) {
+        if (th.value != "") {
+            let strhtml = ``;
+            let bobotcek = true;
+            let counter = edgecounter;
+            for (let i = 1; i <= counter; i++) {
+                let vrtx1 = document.getElementById(`edge_${i}_1`).value;
+                let vrtx2 = document.getElementById(`edge_${i}_2`).value;
+                let bobot = document.getElementById(`bobotedge_${i}`).value;
+                if (bobot != "") {
+                    vertexweight[i] = {
+                        v1: vrtx1,
+                        v2: vrtx2,
+                        bb: bobot
+                    }
+
+                    let stropt = ``;
+                    vertexlabel.forEach(n => {
+                        if (n == vrtx1) stropt += `<option value="${n}" selected>${n}</option>`;
+                        else stropt += `<option value="${n}">${n}</option>`;
+                    })
+
+                    let stropt2 = ``;
+                    vertexlabel.forEach(n => {
+                        if (n != vrtx1) {
+                            if (n == vrtx2) stropt2 += `<option value="${n}" selected>${n}</option>`;
+                            else stropt2 += `<option value="${n}">${n}</option>`;
+                        }
+                    })
+
+                    strhtml += `
+                    <p>Edge ${i}</p>
+                    <label for="edge_${i}_1">Vertex 1</label>
+                    <select id="edge_${i}_1" onclick="vertex1changed(this)">
+                            ${stropt}
+                    </select>
+                    <label for="edge_${i}_2">Vertex 2</label>
+                    <select id="edge_${i}_2">
+                        ${stropt2}
+                    </select>
+                    <label for="bobotedge_${i}">Bobot Edge</label>
+                    <input type="number" id="bobotedge_${i}" onkeyup="addbobotedge(this)" value="${bobot}">
+
+                    `;
+                } else {
+                    bobotcek = false;
+                }
+
+            }
+
+            if (bobotcek) {
+                edgecounter++;
+            }
+
+            let stropt = ``;
+            vertexlabel.forEach(n => {
+                stropt += `<option value="${n}">${n}</option>`;
+            })
+            strhtml += `
+                <p>Edge ${edgecounter}</p>
+                <label for="edge_${edgecounter}_1">Vertex 1</label>
+                <select id="edge_${edgecounter}_1" onclick="vertex1changed(this)">
+                        ${stropt}
+                </select>
+                <label for="edge_${edgecounter}_2">Vertex 2</label>
+                <select id="edge_${edgecounter}_2" disabled>
+
+                </select>
+                <label for="bobotedge_${edgecounter}">Bobot Edge</label>
+                <input type="number" id="bobotedge_${edgecounter}" disabled onkeyup="addbobotedge(this)">
+                <button onclick="hitung()">Submit</button>
+            `;
+
+            document.getElementById("inputedge").innerHTML = strhtml;
+
+        }
+        function hitung() {
+
+        }
+
+    }
+
 </script>
 
 <body>
