@@ -236,7 +236,7 @@ function btnjmledge() {
                             <div class="col-4">
                                 <label for="edge_${i}_1" class="form-label">Vertex 1</label>
                                 <select class="form-select" id="edge_${i}_1" 
-                                    onclick="vertex1Click(this)">
+                                    onclick="vertex1Click(this)" onchange="vertex1Click(this)">
                                     ${stropt}
                                 </select>
                             </div>
@@ -356,7 +356,7 @@ function countToVertexWeight() {
                         <div class="col-sm-3 g-3">
                             <label for="edge_999_1" class="form-label">Vertex Awal</label>
                             <select class="form-select"  id="edge_999_1" 
-                            onclick="vertex1Click(this,true)">
+                            onclick="vertex1Click(this,true)" onchange="vertex1Click(this,true)">
                                 ${stropt}
                             </select>
                         </div>
@@ -408,7 +408,6 @@ function btnHitung() {
             Number(vertexweight[i].bb)
         );
     }
-
     //  menampilkan isi graph
     // console.log(graph.adjacencyList);
 
