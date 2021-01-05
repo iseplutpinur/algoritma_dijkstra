@@ -423,6 +423,20 @@ function btnjikstra() {
 
     result.value = hasil;
     result.removeAttribute("hidden");
-
-
 }
+
+
+
+// testing
+// let graph = new WeightedGraph();
+// graph.addVertex("A")
+// graph.addVertex("B")
+// graph.addVertex("C")
+// graph.addVertex("D")
+
+// graph.addEdge("A", "B", 1);
+// graph.addEdge("A", "C", 6);
+// graph.addEdge("B", "D", 3);
+// graph.addEdge("C", "C", 1);
+
+// console.log(graph.Dijkstra("A", "D"));
