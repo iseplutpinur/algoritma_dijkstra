@@ -1,3 +1,13 @@
+// Nama: Isep Lutpi Nur
+// NPM : 2113191079
+// Matkul: Komunikasi Data
+// Dosen: Nanang Hunaifi
+//
+//
+//
+//
+//
+
 // membuat queue untuk keluar masuknya vertex / node
 class PriorityQueue {
     constructor() {
@@ -104,6 +114,7 @@ const vtrxrule = {
 const inputvertex = document.getElementById("inputvertex");
 const inputedge = document.getElementById("inputedge");
 const hitungjarak = document.getElementById("hitungjarak");
+const result = document.getElementById("result");
 
 // menangani inputan jumlah vertex
 function btnjmlvertex() {
@@ -213,7 +224,7 @@ function btnjmledge() {
             `;
         }
         strhtml += `
-        <br><button onclick="hitung(this)">Submit</button>
+        <br><button onclick="hitung()">Submit</button>
         `;
 
     } else {
@@ -233,20 +244,24 @@ function btnjmledge() {
 }
 
 // validasi ketika vertex 1 dipilih
-function vertex1changed(th) {
+function vertex1changed(th, ht = false) {
     let inpedge = th.id.split("_");
     let inpel = document.getElementById(`edge_${inpedge[1]}_2`);
     let stropt = ``;
 
     inpel.disabled = false;
     vertexlabel.forEach(n => {
-        if (n != th.value && vlabel(th, n)) stropt += `<option value="${n}">${n}</option>`;
+        if (ht) {
+            if (n != th.value) stropt += `<option value="${n}">${n}</option>`;
+        } else {
+            if (n != th.value && vlabel(th, n)) stropt += `<option value="${n}">${n}</option>`;
+        }
     })
     inpel.innerHTML = stropt;
     document.getElementById(`bobotedge_${inpedge[1]}`).disabled = false;
 }
 
-// Mengecek sambungan vertex label
+// Validasi sambungan vertex label
 function vlabel(v1, v2) {
     let cek = true;
     for (let i = 1; i <= jmledge; i++) {
@@ -258,23 +273,17 @@ function vlabel(v1, v2) {
     return cek;
 }
 
-
-
-
-
-
-
-
-
-
-function hitung(th) {
+// validasi bobot edge sekaligus submit data ke variable utama "vertexweight"
+function hitung() {
     vertexweight = [];
     let cekbobot = true;
+
+    // Pengecekan inputan bobot edge sudah di isi atau belum
     for (let i = 1; i <= jmledge; i++) {
         let vrtx1 = document.getElementById(`edge_${i}_1`).value;
         let vrtx2 = document.getElementById(`edge_${i}_2`).value;
         let bobot = document.getElementById(`bobotedge_${i}`);
-        if (bobot.value != "") {
+        if (bobot.value != "" && vrtx2 != "") {
             vertexweight[i] = {
                 v1: vrtx1,
                 v2: vrtx2,
@@ -282,12 +291,18 @@ function hitung(th) {
             }
         } else {
             if (cekbobot) {
-                alert(`Bobot Edge ${i} Belum di isi..`);
-                bobot.focus();
+                if (bobot.value == "") {
+                    alert(`Bobot Edge ${i} Belum di isi..`);
+                    bobot.focus();
+                } else {
+                    alert(`Vertex 2 Edge ${i} Belum di pilih..`);
+                }
             }
             cekbobot = false;
         }
     }
+
+    // membuat elemen untuk memilih node awal dan node tujuan
     if (cekbobot) {
 
         let stropt = ``;
@@ -298,7 +313,7 @@ function hitung(th) {
                     <p>Hitung Jarak Terdekat</p>
                     <label for="edge_999_1">Vertex Awal</label>
                     <select id="edge_999_1" 
-                    onclick="vertex1changed(this)">
+                    onclick="vertex1changed(this,true)">
                             ${stropt}
                     </select>
                     <label for="edge_999_2">Vertex Tujuan</label>
@@ -309,7 +324,7 @@ function hitung(th) {
                     id="bobotedge_999" 
                     disabled style="display:none;">
                     <br><button 
-                    onclick="btnjikstra(this)">Hitung</button>
+                    onclick="btnjikstra()">Hitung</button>
             `;
 
         document.getElementById("hitungjarak").innerHTML = strhtml;
@@ -317,7 +332,7 @@ function hitung(th) {
     }
 }
 
-function btnjikstra(th) {
+function btnjikstra() {
     const vinp1 = document.getElementById(`edge_999_1`);
     const vinp2 = document.getElementById(`edge_999_2`);
     const v1 = vinp1.value;
@@ -343,6 +358,16 @@ function btnjikstra(th) {
     // console.log(graph.adjacencyList);
 
     // memanggil dijkstra dan mentukan jarak terdekat
-    console.log(graph.Dijkstra(v1, v2));
+    // console.log(graph.Dijkstra(v1, v2));
+
+    let hasil = "";
+    graph.Dijkstra(v1, v2).forEach(n => {
+        if (hasil == "") hasil += n;
+        else hasil += ` -> ${n}`;
+    });
+
+    result.value = hasil;
+    result.removeAttribute("hidden");
+
 
 }
