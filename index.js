@@ -183,36 +183,56 @@ function btninpvertex() {
 
 // validasi bobot edge 
 function btnjmledge() {
-    jmledge = document.getElementById("jmledge");
+    const jmlvertex = document.getElementById("jmlvertex");
     const inputedgevalue = document.getElementById("inputedgevalue");
-    jmledge.setAttribute("readonly", "");
-    jmledge = jmledge.value;
-    let stropt = ``;
-    vertexlabel.forEach(n => {
-        stropt += `<option value="${n}">${n}</option>`;
-    })
-    let strhtml = ``;
-    for (let i = 1; i <= jmledge; i++) {
-        strhtml += `
-                    <p>Edge ${i}</p>
-                    <label for="edge_${i}_1">Vertex 1</label>
-                    <select id="edge_${i}_1" onclick="vertex1changed(this)">
-                            ${stropt}
-                    </select>
-                    <label for="edge_${i}_2">Vertex 2</label>
-                    <select id="edge_${i}_2" disabled>
-    
-                    </select>
-                    <label for="bobotedge_${i}">Bobot Edge</label>
-                    <input type="number" id="bobotedge_${i}" disabled>
-                `;
+    const jmledgerule = {
+        min: Number(jmlvertex.value),
+        max: Number(jmlvertex.value) * (Number(jmlvertex.value) - 1)
     }
-    strhtml += `
-                    <br><button onclick="hitung(this)">Submit</button>
-                `;
+    let strhtml = ``;
+    let stropt = ``;
+    jmledge = document.getElementById("jmledge");
+    if (jmledge.value >= jmledgerule.min &&
+        jmledge.value <= jmledgerule.max) {
+        vertexlabel.forEach(n => {
+            stropt += `<option value="${n}">${n}</option>`;
+        })
+        for (let i = 1; i <= jmledge.value; i++) {
+            strhtml += `
+            <p>Edge ${i}</p>
+            <label for="edge_${i}_1">Vertex 1</label>
+            <select id="edge_${i}_1" onclick="vertex1changed(this)">
+            ${stropt}
+            </select>
+            <label for="edge_${i}_2">Vertex 2</label>
+            <select id="edge_${i}_2" disabled>
+            
+            </select>
+            <label for="bobotedge_${i}">Bobot Edge</label>
+            <input type="number" id="bobotedge_${i}" disabled>
+            `;
+        }
+        strhtml += `
+        <br><button onclick="hitung(this)">Submit</button>
+        `;
+
+    } else {
+        if (jmledge.value > jmledgerule.max) {
+            jmledge.value = jmledgerule.max;
+        } else if (jmledge.value < jmledgerule.min) {
+            jmledge.value = jmledgerule.min;
+        }
+
+        alert(`Jumlah vertex minimal ${jmledgerule.min} dan maksimal ${jmledgerule.max}`);
+        jmledge.focus();
+    }
+
+
+    jmledge = Number(jmledge.value);
     inputedgevalue.innerHTML = strhtml;
 }
 
+// validasi ketika vertex 1 dipilih
 function vertex1changed(th) {
     let inpedge = th.id.split("_");
     let inpel = document.getElementById(`edge_${inpedge[1]}_2`);
@@ -220,11 +240,32 @@ function vertex1changed(th) {
 
     inpel.disabled = false;
     vertexlabel.forEach(n => {
-        if (n != th.value) stropt += `<option value="${n}">${n}</option>`;
+        if (n != th.value && vlabel(th, n)) stropt += `<option value="${n}">${n}</option>`;
     })
     inpel.innerHTML = stropt;
     document.getElementById(`bobotedge_${inpedge[1]}`).disabled = false;
 }
+
+// Mengecek sambungan vertex label
+function vlabel(v1, v2) {
+    let cek = true;
+    for (let i = 1; i <= jmledge; i++) {
+        let vrtx1 = document.getElementById(`edge_${i}_1`);
+        let vrtx2 = document.getElementById(`edge_${i}_2`).value;
+        if (vrtx1.value == v1.value && vrtx2 == v2 & v1 != vrtx1) cek = false
+    }
+
+    return cek;
+}
+
+
+
+
+
+
+
+
+
 
 function hitung(th) {
     vertexweight = [];
@@ -248,12 +289,6 @@ function hitung(th) {
         }
     }
     if (cekbobot) {
-        for (let i = 1; i <= jmledge; i++) {
-            document.getElementById(`edge_${i}_1`).setAttribute("readonly", "");
-            document.getElementById(`edge_${i}_2`).setAttribute("readonly", "");
-            document.getElementById(`bobotedge_${i}`).setAttribute("readonly", "");
-        }
-        th.disabled = true;
 
         let stropt = ``;
         vertexlabel.forEach(n => {
