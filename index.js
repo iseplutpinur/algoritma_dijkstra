@@ -83,33 +83,3 @@ class WeightedGraph {
         return path.concat(smallest).reverse();
     }
 }
-
-
-//  instanisasi  Graph
-var graph = new WeightedGraph();
-//  menambah vertex
-graph.addVertex("A");
-graph.addVertex("B");
-graph.addVertex("C");
-graph.addVertex("D");
-graph.addVertex("E");
-graph.addVertex("F");
-graph.addVertex("G");
-
-//  menambah vertex konektor Edge
-graph.addEdge("A", "B", 5);
-graph.addEdge("A", "C", 7);
-graph.addEdge("A", "D", 12);
-graph.addEdge("B", "E", 6);
-graph.addEdge("B", "C", 1);
-graph.addEdge("C", "D", 1);
-graph.addEdge("C", "F", 10);
-graph.addEdge("C", "E", 5);
-graph.addEdge("D", "F", 13);
-graph.addEdge("E", "F", 2);
-graph.addEdge("E", "G", 7);
-graph.addEdge("F", "G", 3);
-//  menampilkan isi graph
-
-// memanggil dijkstra dan mentukan jarak terdekat
-console.log(graph.Dijkstra("A", "G"));

@@ -6,24 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Algoritma Djikstra</title>
 </head>
+<!-- input jumlah vertex -->
 <label for="jmlvertex">Jumlah Vertex</label>
 <input type="number" id="jmlvertex">
+<br><button onclick="btnjmlvertex(this)">Submit</button><br><br>
+
+<!-- input vertex -->
+<div id="inputvertex"></div><br><br>
+
+<!-- input edge -->
+<div id="inputedge"></div>
+
 <br>
-<button onclick="btnjmlvertex(this)">Submit</button>
-<br>
-<br>
-<div id="inputvertex">
+
+<div id="hitungjarak">
 
 </div>
+
 <br>
 <br>
-<div id="inputedge">
-
-
-</div>
-
-
-
 <button onclick="location.reload()">Reload</button>
 <script src="index.js"></script>
 <script>
@@ -31,8 +32,7 @@
     // Style
     let vertexlabel = [];
     let vertexweight = [];
-    let edgecounter = 1;
-    let jmlvertexs = 0;
+    let jmledge = null;
     function btnjmlvertex(th) {
         const jmlvertex = document.getElementById("jmlvertex");
         if (jmlvertex.value >= 3 && jmlvertex.value <= 10) {
@@ -46,7 +46,6 @@
             document.getElementById("inputvertex").innerHTML = strhtml;
             jmlvertex.setAttribute("readonly", "");
             th.disabled = true;
-            jmlvertexs = jmlvertex;
         } else {
             if (jmlvertex.value > 10) jmlvertex.value = 10;
             else if (jmlvertex.value < 3) jmlvertex.value = 3;
@@ -54,44 +53,70 @@
         }
     }
 
-
     function btninpvertex(th) {
         vertexlabel = [];
         let cek = true;
 
-        document.querySelectorAll(".labelvertex").forEach(m => {
+        document.querySelectorAll(".labelvertex").forEach((m, i) => {
             vertexlabel.push(m.value);
-            if (m.value == "" || m.value.length > 1) cek = false;
+            if (m.value == "" || m.value.length > 1) {
+                if (cek) {
+                    m.focus()
+                    alert(`Label Vertex ${i + 1} Belum Di Isi`);
+                }
+                cek = false;
+            }
         });
 
-        if (!cek) {
-            alert("Semual Label Vertex Harus Di Isi")
-        } else {
+        if (cek) {
             document.querySelectorAll(".labelvertex").forEach(m => { m.setAttribute("readonly", ""); });
             th.disabled = true;
-            let stropt = ``;
-            vertexlabel.forEach(n => {
-                stropt += `<option value="${n}">${n}</option>`;
-            })
-            let strhtml = `
-                <p>Edge 1</p>
-                <label for="edge_${edgecounter}_1">Vertex 1</label>
-                <select id="edge_${edgecounter}_1" onclick="vertex1changed(this)">
-                        ${stropt}
-                </select>
-                <label for="edge_${edgecounter}_2">Vertex 2</label>
-                <select id="edge_${edgecounter}_2" disabled>
 
-                </select>
-                <label for="bobotedge_${edgecounter}">Bobot Edge</label>
-                <input type="number" id="bobotedge_${edgecounter}" disabled onkeyup="addbobotedge(this)">
-            `;
-
-            document.getElementById("inputedge").innerHTML = strhtml;
+            document.getElementById("inputedge").innerHTML = `
+                    <label for="jmledge">Jumlah Edge</label>
+                    <input type="number" id="jmledge">
+                    <br>
+                    <button onclick="btnjmledge(this)">Submit</button>
+                    <br>
+                    <br>
+                    <div id="inputedgevalue"></div>
+                `;
         }
     }
 
-    function labelvertexcek(th = "") {
+    function btnjmledge(th) {
+        jmledge = document.getElementById("jmledge");
+        const inputedgevalue = document.getElementById("inputedgevalue");
+        th.disabled = true;
+        jmledge.setAttribute("readonly", "");
+        jmledge = jmledge.value;
+        let stropt = ``;
+        vertexlabel.forEach(n => {
+            stropt += `<option value="${n}">${n}</option>`;
+        })
+        let strhtml = ``;
+        for (let i = 1; i <= jmledge; i++) {
+            strhtml += `
+                    <p>Edge ${i}</p>
+                    <label for="edge_${i}_1">Vertex 1</label>
+                    <select id="edge_${i}_1" onclick="vertex1changed(this)">
+                            ${stropt}
+                    </select>
+                    <label for="edge_${i}_2">Vertex 2</label>
+                    <select id="edge_${i}_2" disabled>
+    
+                    </select>
+                    <label for="bobotedge_${i}">Bobot Edge</label>
+                    <input type="number" id="bobotedge_${i}" disabled>
+                `;
+        }
+        strhtml += `
+                    <br><button onclick="hitung(this)">Submit</button>
+                `;
+        inputedgevalue.innerHTML = strhtml;
+    }
+
+    function labelvertexcek(th) {
         th.value = th.value.toUpperCase();
         document.querySelectorAll(".labelvertex").forEach(m => {
             if (m.value != "" && m != th) {
@@ -118,88 +143,87 @@
         document.getElementById(`bobotedge_${inpedge[1]}`).disabled = false;
     }
 
-    function addbobotedge(th) {
-        if (th.value != "") {
-            let strhtml = ``;
-            let bobotcek = true;
-            let counter = edgecounter;
-            for (let i = 1; i <= counter; i++) {
-                let vrtx1 = document.getElementById(`edge_${i}_1`).value;
-                let vrtx2 = document.getElementById(`edge_${i}_2`).value;
-                let bobot = document.getElementById(`bobotedge_${i}`).value;
-                if (bobot != "") {
-                    vertexweight[i] = {
-                        v1: vrtx1,
-                        v2: vrtx2,
-                        bb: bobot
-                    }
-
-                    let stropt = ``;
-                    vertexlabel.forEach(n => {
-                        if (n == vrtx1) stropt += `<option value="${n}" selected>${n}</option>`;
-                        else stropt += `<option value="${n}">${n}</option>`;
-                    })
-
-                    let stropt2 = ``;
-                    vertexlabel.forEach(n => {
-                        if (n != vrtx1) {
-                            if (n == vrtx2) stropt2 += `<option value="${n}" selected>${n}</option>`;
-                            else stropt2 += `<option value="${n}">${n}</option>`;
-                        }
-                    })
-
-                    strhtml += `
-                    <p>Edge ${i}</p>
-                    <label for="edge_${i}_1">Vertex 1</label>
-                    <select id="edge_${i}_1" onclick="vertex1changed(this)">
-                            ${stropt}
-                    </select>
-                    <label for="edge_${i}_2">Vertex 2</label>
-                    <select id="edge_${i}_2">
-                        ${stropt2}
-                    </select>
-                    <label for="bobotedge_${i}">Bobot Edge</label>
-                    <input type="number" id="bobotedge_${i}" onkeyup="addbobotedge(this)" value="${bobot}">
-
-                    `;
-                } else {
-                    bobotcek = false;
+    function hitung(th) {
+        vertexweight = [];
+        let cekbobot = true;
+        for (let i = 1; i <= jmledge; i++) {
+            let vrtx1 = document.getElementById(`edge_${i}_1`).value;
+            let vrtx2 = document.getElementById(`edge_${i}_2`).value;
+            let bobot = document.getElementById(`bobotedge_${i}`);
+            if (bobot.value != "") {
+                vertexweight[i] = {
+                    v1: vrtx1,
+                    v2: vrtx2,
+                    bb: bobot.value
                 }
-
+            } else {
+                if (cekbobot) {
+                    alert(`Bobot Edge ${i} Belum di isi..`);
+                    bobot.focus();
+                }
+                cekbobot = false;
             }
-
-            if (bobotcek) {
-                edgecounter++;
+        }
+        if (cekbobot) {
+            for (let i = 1; i <= jmledge; i++) {
+                document.getElementById(`edge_${i}_1`).setAttribute("readonly", "");
+                document.getElementById(`edge_${i}_2`).setAttribute("readonly", "");
+                document.getElementById(`bobotedge_${i}`).setAttribute("readonly", "");
             }
+            th.disabled = true;
 
             let stropt = ``;
             vertexlabel.forEach(n => {
                 stropt += `<option value="${n}">${n}</option>`;
             })
-            strhtml += `
-                <p>Edge ${edgecounter}</p>
-                <label for="edge_${edgecounter}_1">Vertex 1</label>
-                <select id="edge_${edgecounter}_1" onclick="vertex1changed(this)">
-                        ${stropt}
-                </select>
-                <label for="edge_${edgecounter}_2">Vertex 2</label>
-                <select id="edge_${edgecounter}_2" disabled>
-
-                </select>
-                <label for="bobotedge_${edgecounter}">Bobot Edge</label>
-                <input type="number" id="bobotedge_${edgecounter}" disabled onkeyup="addbobotedge(this)">
-                <button onclick="hitung()">Submit</button>
+            let strhtml = `
+                    <p>Hitung Jarak Terdekat</p>
+                    <label for="edge_999_1">Vertex Awal</label>
+                    <select id="edge_999_1" onclick="vertex1changed(this)">
+                            ${stropt}
+                    </select>
+                    <label for="edge_999_2">Vertex Tujuan</label>
+                    <select id="edge_999_2" disabled>
+    
+                    </select>
+                    <input type="number" id="bobotedge_999" disabled style="display:none;">
+                    <br><button onclick="btnjikstra(this)">Hitung</button>
             `;
 
-            document.getElementById("inputedge").innerHTML = strhtml;
+            document.getElementById("hitungjarak").innerHTML = strhtml;
 
         }
-        function hitung() {
-
-        }
-
     }
 
+    function btnjikstra(th) {
+        const vinp1 = document.getElementById(`edge_999_1`);
+        const vinp2 = document.getElementById(`edge_999_2`);
+        const v1 = vinp1.value;
+        const v2 = vinp2.value;
+        vinp1.setAttribute("readonly", "");
+        vinp2.setAttribute("readonly", "");
+        th.disabled = true;
+        //  instanisasi  Graph
+        const graph = new WeightedGraph();
+
+        vertexlabel.forEach(n => {
+            //  menambah vertex
+            graph.addVertex(n);
+
+        });
+
+        for (let i = 1; i <= jmledge; i++) {
+            //  menambah vertex konektor Edge
+            graph.addEdge(vertexweight[i].v1, vertexweight[i].v2, vertexweight[i].bb);
+        }
+
+        //  menampilkan isi graph
+        console.log(graph.adjacencyList);
+
+        // memanggil dijkstra dan mentukan jarak terdekat
+        console.log(graph.Dijkstra(v1, v2));
+
+    }
 </script>
 
 <body>
