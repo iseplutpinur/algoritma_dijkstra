@@ -1,3 +1,4 @@
+// membuat queue untuk keluar masuknya vertex / node
 class PriorityQueue {
     constructor() {
         this.values = [];
@@ -13,7 +14,9 @@ class PriorityQueue {
     }
     //   mensorting queue yg lebih pendek
     sort() {
+        console.log("1", this.values);
         this.values.sort((a, b) => a.priority - b.priority);
+        console.log("2", this.values, "\n\n\n");
     }
 }
 
@@ -48,6 +51,10 @@ class WeightedGraph {
                 nodes.enqueue(vertex, Infinity);
             }
             previous[vertex] = null;
+
+            console.log("\n\nvertex\n", vertex === start, vertex, start,
+                "\n\nNodes\n", nodes.values,
+                "\n\nistance\n", distances);
         }
 
         // menentukan panjang path yg dikunjungi
@@ -83,17 +90,21 @@ class WeightedGraph {
     }
 }
 
+// inisialisasi graph
+const graph = new WeightedGraph();
 
-let graph = new WeightedGraph();
+// 1. 
 graph.addVertex("A")
 graph.addVertex("B")
 graph.addVertex("C")
 graph.addVertex("D")
 
+// 2.
 graph.addEdge("A", "B", 1);
 graph.addEdge("A", "C", 6);
 graph.addEdge("B", "D", 3);
-graph.addEdge("C", "C", 1);
+graph.addEdge("C", "D", 1);
 
-console.log(graph.adjacencyList);
+// console.log(graph.adjacencyList);
+// 3. 
 console.log(graph.Dijkstra("A", "D"));
