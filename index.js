@@ -110,7 +110,6 @@ const vtrxrule = {
 const inputvertex = document.getElementById("inputvertex");
 const inputedge = document.getElementById("inputedge");
 const hitungjarak = document.getElementById("hitungjarak");
-const result = document.getElementById("result");
 
 // menangani inputan jumlah vertex
 function btnjmlvertex() {
@@ -262,7 +261,7 @@ function btnjmledge() {
             `;
         }
         strhtml += `
-        <div class="d-grid gap-2 mt-2">
+        <div class="d-grid gap-2 mt-3">
         <button class="btn btn-primary btn-lg" type="button" onclick="hitung()">Submit</button>
         </div>
         </div>
@@ -351,21 +350,35 @@ function hitung() {
             stropt += `<option value="${n}">${n}</option>`;
         })
         let strhtml = `
-                    <p>Hitung Jarak Terdekat</p>
-                    <label for="edge_999_1">Vertex Awal</label>
-                    <select id="edge_999_1" 
-                    onclick="vertex1changed(this,true)">
-                            ${stropt}
-                    </select>
-                    <label for="edge_999_2">Vertex Tujuan</label>
-                    <select id="edge_999_2" disabled>
-    
-                    </select>
+                    <hr class="my-4">
+                    <div class="row gy-3 gx-3">
+                    <h4 class="mb-3">Hitung Jarak Tercepat</h4>
+                        <div class="col-sm-3 g-3">
+                            <label for="edge_999_1" class="form-label">Vertex Awal</label>
+                            <select class="form-select"  id="edge_999_1" 
+                            onclick="vertex1changed(this,true)">
+                                ${stropt}
+                            </select>
+                        </div>
+                        <div class="col-sm-3 g-3">
+                            <label for="edge_999_2" class="form-label">Vertex Tujuan</label>
+                            <select id="edge_999_2" class="form-select" disabled>
+            
+                            </select>
+                        </div>
+                        <div class="col-sm-6 g-3">                    
+                            <label for="jmledge" class="form-label">Jalur Tercepat</label>
+                            <input class="form-control" type="text" id="result">
+                        </div>
+
+                        <div class="d-grid gap-2 mt-3">
+                                <button class="btn btn-primary btn-lg " type="button"
+                                onclick="btnjikstra()">Hitung</button>
+                        </div>
+                    </div>
                     <input type="number" 
                     id="bobotedge_999" 
                     disabled style="display:none;">
-                    <br><button 
-                    onclick="btnjikstra()">Hitung</button>
             `;
 
         document.getElementById("hitungjarak").innerHTML = strhtml;
@@ -376,6 +389,7 @@ function hitung() {
 function btnjikstra() {
     const vinp1 = document.getElementById(`edge_999_1`);
     const vinp2 = document.getElementById(`edge_999_2`);
+    const result = document.getElementById(`result`);
     const v1 = vinp1.value;
     const v2 = vinp2.value;
     //  instanisasi  Graph
