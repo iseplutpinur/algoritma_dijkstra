@@ -1,12 +1,8 @@
-// Nama: Isep Lutpi Nur
-// NPM : 2113191079
-// Matkul: Komunikasi Data
-// Dosen: Nanang Hunaifi
-//
-//
-//
-//
-//
+// Nama   : Isep Lutpi Nur
+// NPM    : 2113191079
+// Matkul : Komunikasi Data
+// Dosen  : Nanang Hunaifi, ST, MM
+
 
 // membuat queue untuk keluar masuknya vertex / node
 class PriorityQueue {
@@ -122,14 +118,31 @@ function btnjmlvertex() {
 
     // validasi jumlah vertex minimal 3 dan maxsimal 10
     if (jmlvertex.value >= vtrxrule.min && jmlvertex.value <= vtrxrule.max) {
-        let strhtml = ``;
+        let strhtml = `<hr class="my-4">
+        <h4 class="mb-3">Label Vertex</h4>
+        <div class="row gy-3">
+        `;
         for (let i = 0; i < jmlvertex.value; i++) {
             strhtml += `    
-            <label for="labelvertex${i}">Label Vertex ${i + 1}</label>
-            <input type="text" id="labelvertex${i}" 
-            class="labelvertex" onkeyup="labelvertexcek(this)"><br>`;
+            <div class="col-sm-3 col-md-2">
+            <div class="card">
+                <div class="card-body">
+            <label for="labelvertex${i}" class="form-label">Label Vertex ${i + 1}</label>
+            <input type="text" class="form-control labelvertex" id="labelvertex${i}"
+             placeholder="" required="" onkeyup="labelvertexcek(this)">
+
+            </div>
+            </div>
+            </div>
+            `;
+
         }
-        strhtml += `<br><button onclick="btninpvertex()">Submit</button>`;
+        strhtml += `
+            <div class="d-grid gap-2">
+            <button class="btn btn-primary btn-lg" type="button" onclick="btninpvertex()">Submit</button>
+            </div>
+            </div>
+        `;
         inputvertex.innerHTML = strhtml;
 
         inputedge.innerHTML = "";
@@ -181,12 +194,16 @@ function btninpvertex() {
 
         // membuat elemen untuk jumlah inputan bobot edge
         inputedge.innerHTML = `
-                    <label for="jmledge">Jumlah Edge</label>
-                    <input type="number" id="jmledge">
-                    <br>
-                    <button onclick="btnjmledge()">Submit</button>
-                    <br>
-                    <br>
+                    <hr class="my-4">
+                    <div class="col-sm-12 g-3">
+                        <label for="jmledge" class="form-label">Jumlah Edge</label>
+                        <input type="number" class="form-control" id="jmledge" 
+                        required="">
+                    </div>
+                    <div class="d-grid gap-2 mt-3">
+                            <button class="btn btn-primary btn-lg " type="button"
+                            onclick="btnjmledge()">Submit</button>
+                    </div>
                     <div id="inputedgevalue"></div>
                 `;
     }
@@ -200,7 +217,9 @@ function btnjmledge() {
         min: Number(jmlvertex.value),
         max: Number(jmlvertex.value) * (Number(jmlvertex.value) - 1)
     }
-    let strhtml = ``;
+    let strhtml = `<hr class="my-4">
+    <h4 class="mb-3">Bobot edge</h4>
+    <div class="row gy-3 gx-3">`;
     let stropt = ``;
     jmledge = document.getElementById("jmledge");
     if (jmledge.value >= jmledgerule.min &&
@@ -210,21 +229,43 @@ function btnjmledge() {
         })
         for (let i = 1; i <= jmledge.value; i++) {
             strhtml += `
-            <p>Edge ${i}</p>
-            <label for="edge_${i}_1">Vertex 1</label>
-            <select id="edge_${i}_1" onclick="vertex1changed(this)">
-            ${stropt}
-            </select>
-            <label for="edge_${i}_2">Vertex 2</label>
-            <select id="edge_${i}_2" disabled>
+            <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Edge ${i}</h5>
+                        <div class="row gy-3">
+                            <div class="col-4">
+                                <label for="edge_${i}_1" class="form-label">Vertex 1</label>
+                                <select class="form-select" id="edge_${i}_1" 
+                                    onclick="vertex1changed(this)">
+                                    ${stropt}
+                                </select>
+                            </div>
+
+                            <div class="col-4">
+                                <label for="edge_${i}_2" class="form-label">Vertex 2</label>
+                                <select class="form-select" id="edge_${i}_2" disabled>
+                                </select>
+                            </div>
+                            
+                            <div class="col-4">
+                                <label for="bobotedge_${i}" class="form-label">Bobot Edge</label>
+                                <input type="number" class="form-control" id="bobotedge_${i}" 
+                                required="" disabled>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
             
-            </select>
-            <label for="bobotedge_${i}">Bobot Edge</label>
-            <input type="number" id="bobotedge_${i}" disabled>
             `;
         }
         strhtml += `
-        <br><button onclick="hitung()">Submit</button>
+        <div class="d-grid gap-2 mt-2">
+        <button class="btn btn-primary btn-lg" type="button" onclick="hitung()">Submit</button>
+        </div>
+        </div>
         `;
 
     } else {
