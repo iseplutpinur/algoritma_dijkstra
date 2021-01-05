@@ -54,12 +54,15 @@ class WeightedGraph {
 
             console.log("\n\nvertex\n", vertex === start, vertex, start,
                 "\n\nNodes\n", nodes.values,
-                "\n\nistance\n", distances);
+                "\n\ndistance\n", distances,
+                "\n\nprevious\n", previous);
         }
 
         // menentukan panjang path yg dikunjungi
         while (nodes.values.length) {
             smallest = nodes.dequeue().val;
+            console.log(nodes)
+            console.log(smallest === finish, smallest, finish)
             if (smallest === finish) {
                 // selesai sampai tujuan mengembalikan nilai terekhir
                 while (previous[smallest]) {
@@ -86,6 +89,9 @@ class WeightedGraph {
                 }
             }
         }
+
+        console.log(nodes.values);
+        console.log(path, smallest);
         return path.concat(smallest).reverse();
     }
 }
