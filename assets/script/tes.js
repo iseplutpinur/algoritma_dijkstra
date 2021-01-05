@@ -95,4 +95,5 @@ graph.addEdge("A", "C", 6);
 graph.addEdge("B", "D", 3);
 graph.addEdge("C", "C", 1);
 
+console.log(graph.adjacencyList);
 console.log(graph.Dijkstra("A", "D"));

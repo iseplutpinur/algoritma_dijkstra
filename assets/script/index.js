@@ -107,28 +107,28 @@ const vtrxrule = {
 };
 
 // element display
-const inputvertex = document.getElementById("inputvertex");
-const inputedge = document.getElementById("inputedge");
-const hitungjarak = document.getElementById("hitungjarak");
+const inputVertex = document.getElementById("inputVertex");
+const inputEdge = document.getElementById("inputEdge");
+const countDistance = document.getElementById("countDistance");
 
 // menangani inputan jumlah vertex
-function btnjmlvertex() {
-    const jmlvertex = document.getElementById("jmlvertex");
+function totalVertexBtn() {
+    const totalvertex = document.getElementById("totalvertex");
 
     // validasi jumlah vertex minimal 3 dan maxsimal 10
-    if (jmlvertex.value >= vtrxrule.min && jmlvertex.value <= vtrxrule.max) {
+    if (totalvertex.value >= vtrxrule.min && totalvertex.value <= vtrxrule.max) {
         let strhtml = `<hr class="my-4">
         <h4 class="mb-3">Label Vertex</h4>
         <div class="row gy-3">
         `;
-        for (let i = 0; i < jmlvertex.value; i++) {
+        for (let i = 0; i < totalvertex.value; i++) {
             strhtml += `    
             <div class="col-sm-3 col-md-2">
             <div class="card">
                 <div class="card-body">
             <label for="labelvertex${i}" class="form-label">Label Vertex ${i + 1}</label>
             <input type="text" class="form-control labelvertex" id="labelvertex${i}"
-             placeholder="" required="" onkeyup="labelvertexcek(this)">
+             placeholder="" required="" onkeyup="checkLabelVertex(this)">
 
             </div>
             </div>
@@ -142,20 +142,20 @@ function btnjmlvertex() {
             </div>
             </div>
         `;
-        inputvertex.innerHTML = strhtml;
+        inputVertex.innerHTML = strhtml;
 
-        inputedge.innerHTML = "";
-        hitungjarak.innerHTML = "";
+        inputEdge.innerHTML = "";
+        countDistance.innerHTML = "";
     } else {
-        if (jmlvertex.value > vtrxrule.max) jmlvertex.value = vtrxrule.max;
-        else if (jmlvertex.value < vtrxrule.min) jmlvertex.value = vtrxrule.min;
+        if (totalvertex.value > vtrxrule.max) totalvertex.value = vtrxrule.max;
+        else if (totalvertex.value < vtrxrule.min) totalvertex.value = vtrxrule.min;
         alert(`Jumlah vertex minimal ${vtrxrule.min} dan maksimal ${vtrxrule.max}`);
-        jmlvertex.focus();
+        totalvertex.focus();
     }
 }
 
 // validasi Karakter label
-function labelvertexcek(th) {
+function checkLabelVertex(th) {
     th.value = th.value.toUpperCase();
     document.querySelectorAll(".labelvertex").forEach(m => {
         if (m.value != "" && m != th) {
@@ -192,7 +192,7 @@ function btninpvertex() {
     if (cek) {
 
         // membuat elemen untuk jumlah inputan bobot edge
-        inputedge.innerHTML = `
+        inputEdge.innerHTML = `
                     <hr class="my-4">
                     <div class="col-sm-12 g-3">
                         <label for="jmledge" class="form-label">Jumlah Edge</label>
@@ -203,18 +203,18 @@ function btninpvertex() {
                             <button class="btn btn-primary btn-lg " type="button"
                             onclick="btnjmledge()">Submit</button>
                     </div>
-                    <div id="inputedgevalue"></div>
+                    <div id="edgevalueinput"></div>
                 `;
     }
 }
 
 // validasi bobot edge 
 function btnjmledge() {
-    const jmlvertex = document.getElementById("jmlvertex");
-    const inputedgevalue = document.getElementById("inputedgevalue");
+    const totalvertex = document.getElementById("totalvertex");
+    const edgevalueinput = document.getElementById("edgevalueinput");
     const jmledgerule = {
-        min: Number(jmlvertex.value),
-        max: Number(jmlvertex.value) * (Number(jmlvertex.value) - 1)
+        min: Number(totalvertex.value),
+        max: Number(totalvertex.value) * (Number(totalvertex.value) - 1)
     }
     let strhtml = `<hr class="my-4">
     <h4 class="mb-3">Bobot edge</h4>
@@ -236,7 +236,7 @@ function btnjmledge() {
                             <div class="col-4">
                                 <label for="edge_${i}_1" class="form-label">Vertex 1</label>
                                 <select class="form-select" id="edge_${i}_1" 
-                                    onclick="vertex1changed(this)">
+                                    onclick="vertex1Click(this)">
                                     ${stropt}
                                 </select>
                             </div>
@@ -262,7 +262,7 @@ function btnjmledge() {
         }
         strhtml += `
         <div class="d-grid gap-2 mt-3">
-        <button class="btn btn-primary btn-lg" type="button" onclick="hitung()">Submit</button>
+        <button class="btn btn-primary btn-lg" type="button" onclick="countToVertexWeight()">Submit</button>
         </div>
         </div>
         `;
@@ -280,11 +280,11 @@ function btnjmledge() {
 
 
     jmledge = Number(jmledge.value);
-    inputedgevalue.innerHTML = strhtml;
+    edgevalueinput.innerHTML = strhtml;
 }
 
 // validasi ketika vertex 1 dipilih
-function vertex1changed(th, ht = false) {
+function vertex1Click(th, ht = false) {
     let inpedge = th.id.split("_");
     let inpel = document.getElementById(`edge_${inpedge[1]}_2`);
     let stropt = ``;
@@ -294,7 +294,7 @@ function vertex1changed(th, ht = false) {
         if (ht) {
             if (n != th.value) stropt += `<option value="${n}">${n}</option>`;
         } else {
-            if (n != th.value && vlabel(th, n)) stropt += `<option value="${n}">${n}</option>`;
+            if (n != th.value && vertex2Check(th, n)) stropt += `<option value="${n}">${n}</option>`;
         }
     })
     inpel.innerHTML = stropt;
@@ -302,7 +302,7 @@ function vertex1changed(th, ht = false) {
 }
 
 // Validasi sambungan vertex label
-function vlabel(v1, v2) {
+function vertex2Check(v1, v2) {
     let cek = true;
     for (let i = 1; i <= jmledge; i++) {
         let vrtx1 = document.getElementById(`edge_${i}_1`);
@@ -314,7 +314,7 @@ function vlabel(v1, v2) {
 }
 
 // validasi bobot edge sekaligus submit data ke variable utama "vertexweight"
-function hitung() {
+function countToVertexWeight() {
     vertexweight = [];
     let cekbobot = true;
 
@@ -352,11 +352,11 @@ function hitung() {
         let strhtml = `
                     <hr class="my-4">
                     <div class="row gy-3 gx-3">
-                    <h4 class="mb-3">Hitung Jarak Tercepat</h4>
+                    <h4 class="mb-3">Hitung Jalur Tercepat</h4>
                         <div class="col-sm-3 g-3">
                             <label for="edge_999_1" class="form-label">Vertex Awal</label>
                             <select class="form-select"  id="edge_999_1" 
-                            onclick="vertex1changed(this,true)">
+                            onclick="vertex1Click(this,true)">
                                 ${stropt}
                             </select>
                         </div>
@@ -373,7 +373,7 @@ function hitung() {
 
                         <div class="d-grid gap-2 mt-3">
                                 <button class="btn btn-primary btn-lg " type="button"
-                                onclick="btnjikstra()">Hitung</button>
+                                onclick="btnHitung()">Hitung</button>
                         </div>
                     </div>
                     <input type="number" 
@@ -381,12 +381,12 @@ function hitung() {
                     disabled style="display:none;">
             `;
 
-        document.getElementById("hitungjarak").innerHTML = strhtml;
+        document.getElementById("countDistance").innerHTML = strhtml;
 
     }
 }
 
-function btnjikstra() {
+function btnHitung() {
     const vinp1 = document.getElementById(`edge_999_1`);
     const vinp2 = document.getElementById(`edge_999_2`);
     const result = document.getElementById(`result`);
@@ -425,6 +425,13 @@ function btnjikstra() {
     result.removeAttribute("hidden");
 }
 
+
+function reset() {
+    inputVertex.innerHTML = "";
+    inputEdge.innerHTML = "";
+    countDistance.innerHTML = "";
+    document.getElementById("totalvertex").focus();
+}
 
 
 // testing
