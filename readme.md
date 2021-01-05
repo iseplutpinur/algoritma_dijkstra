@@ -5,3 +5,6 @@ Tugas besar Mata Kuliah Komunikasi Data Implementasi algoritma dijkstra
 <img src="Contoh.png">
 
 <img src="Hasil.png">
+
+<hr>
+<a href="https://iseplutpinur.github.io/algoritma_dijkstra/">Lihat Program</a>
