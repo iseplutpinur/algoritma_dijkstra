@@ -122,6 +122,7 @@ const graph = new WeightedGraph();
 ```
 
 2. Menambah label vertex dengan menggunakan method addVertex(labelvertex).
+
 ``` javascript
 graph.addVertex("A");
 graph.addVertex("B");
@@ -175,6 +176,7 @@ console.log(graph.Dijkstra("A", "D"));
 <div style="page-break-after: always; break-after: page;"></div>
 ## Cara kerja
 1. Ketika graph di inisialisasi maka constructor akan mendeklarasikan adjacencyList atau daftar node yang terhubung untuk perhitungan, dideklarasikan dengan tipe data objek.
+
 ``` javascript
 class WeightedGraph {
     constructor() {
@@ -188,7 +190,10 @@ class WeightedGraph {
 
 const graph = new WeightedGraph();
 ```
+
+
 2. Ketika method addVertex dijalankan dengan parameter label vertex atau node akan ditambahkan ke properti adjacencyList dengan tipe data array yang nantinya array tersebut akan memuat detal data bobot edge vertex.
+
 ``` javascript
 // function membuat vertex tempat  destinasi
 addVertex(vertex) {
@@ -204,7 +209,9 @@ graph.addVertex("F");
 graph.addVertex("G");
 ```
 
+
 3. Setelah selesai menambahkan label dari vertex, bobot edge vertex akan ditambahkan sesuai dengan labelnya masing masing kedalam properti adjacencyList\[vertex\] masing masng.
+
 ``` javascript
 //    function membuat edge dan panjang jarak penghubung ke vertex lain
 addEdge(vertex1, vertex2, weight) {
@@ -230,6 +237,8 @@ graph.addEdge("E", "G", 7);
 
 graph.addEdge("F", "G", 3);
 ```
+
+
 4. setelah label dan bobot tiap tiap node/ vertex didapat maka pencarian jalur tecepat dapat dilakukan dengan cara memanggil method Djikstra(awal, tujuan), dengan dua parameter yaitu parameter awal dan parameter tujuan, method ini mengembalikan/return hasil dari pencarian jalur tercepat dengan tipe data array.
 ``` javascript
 class PriorityQueue {
