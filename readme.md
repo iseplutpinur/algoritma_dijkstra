@@ -163,11 +163,31 @@ console.log(graph.Dijkstra("A", "D"));
 ### Dengan GUI/ Halaman Web
 
 1. Kunjungi halaman: <a href="https://iseplutpinur.github.io/algoritma_dijkstra/">https://iseplutpinur.github.io/algoritma_dijkstra/</a>
+
 2. Masukan Jumlah Vertex sesuai contoh kasus, Lalu Klik Submit.<img src="assets\img\input-jumlah-vertex.png">
+
+   Jumlah vertex makasimal dan minimal serta jumlah karakter untuk label vertex diatur di file assets/script/index.js, Baris 103.
+
+   ```javascript
+   const vtrxrule = {
+       min: 3,
+       max: 10,
+       labelcharmax: 1
+   };
+   ```
+
+   
+
 3. Masukan Label Vertex sesuai contoh kasus, Lalu Klik Submit.<img src="assets\img\input-label-vertex.png">
+
 4. Masuka Jumlah edge atau sambungan antara node/vertex sesuai contoh kasus, Lalu Klk Submit.<img src="assets\img\input-jumlah-edge.png">
+
+   Jumlah Edge minimal adalah sama dengan jumlah vertex dan jumlah makasimal adalah jumlah vertex dikali jumlah vertex min satu (jv*(jv-1)) jv: jumlah vertex/node.
+
 5. Masukan Bobot tiap tiap ede sesuai dengan contoh kasus, lalu klik Submit. *Pada pilihan vertex 2 dan bobot edge akan terbuka jika Vertex 1 Telah di pilih.<img src="assets\img\input-bobot-edge.png">
+
 6. Pilih Vertex/ Node awal dan Vertex/ Node tujuan, Lalu klik Hitung, Maka kolom jalur tercepat akan menampilkan hasil.<img src="assets\img\menentukan-vertex-awal-dan-akhir.png">
+
 7. Untuk Menggunakan kembali, Klik Tombol reset.<img src="assets\img\tombol-reset.png">
 
 
