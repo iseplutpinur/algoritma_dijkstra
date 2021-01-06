@@ -173,6 +173,7 @@ console.log(graph.Dijkstra("A", "D"));
 
 <div style="page-break-after: always; break-after: page;"></div>
 ## Cara kerja
+
 1. Ketika graph di inisialisasi maka constructor akan mendeklarasikan adjacencyList atau daftar node yang terhubung untuk perhitungan, dideklarasikan dengan tipe data objek.
 
 ``` javascript
@@ -311,21 +312,6 @@ Dijkstra(start, finish) {
 console.log(graph.Dijkstra("A", "G"));
 // hasil [ 'A', 'B', 'E', 'F', 'G' ]
 ```
-5. Proses diidalam method Djikstra.
-     1. Membangun initial state atau node keberangkatan Seperti contoh node keberangkatan d sini adalah 'A' maka priority nya 0, dan yang lain infinity dan node keberangkatan di sortir menjadi array paling rendah atau 0, untuk nantinya di dequeu atau diambil sementara.
-
-        ```
-        
-        ```
-
-        
-
-     2. menentukan path yang dikunjungi dengan perulangan, perulangan nya akan berhenti jika nilai label dengan nilai terkecil sama dengan label tujuan. *di point d dibawah
-
-     3. variable samllest akan di isi nilai keberangkatan yang telah di sort dari node. contoh disini node awalnya 'A' maka variable samllest akan berisi nilai 'A'.
-
-     4. Kemudian smallest di cek apakah sama dengan nilai tujuan, jika sama maka dilakukan perulangan dengan parameter previous. didalam perulangan dilakukan push ke variable path dengan nilai smallest
-
 
 
 
