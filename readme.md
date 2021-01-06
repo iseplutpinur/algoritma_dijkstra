@@ -1,6 +1,4 @@
-Nama: Isep Lutpi Nur
-NPM: 2113191079
-Tugas: Komunikasi Data Minggu 14 Implementasi Djikstra
+Nama: Isep Lutpi Nur<br>NPM: 2113191079<br>Tugas: Komunikasi Data Minggu 14 Implementasi Djikstra
 
 <hr>
 
