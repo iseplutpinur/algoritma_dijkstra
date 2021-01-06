@@ -137,3 +137,4 @@ graph.addEdge("C", "D", 1);
 // console.log(graph.adjacencyList);
 // 3. 
 console.log(graph.Dijkstra("A", "D"));
+// hasil [ 'A', 'B', 'D' ]
