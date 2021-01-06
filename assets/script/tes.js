@@ -41,6 +41,8 @@ class WeightedGraph {
         const previous = {};
         let path = []; // tempat menembalikan nodes terakhir
         let smallest;
+
+        // ===================================== a
         // membangun initial state
         for (let vertex in this.adjacencyList) {
             if (vertex === start) {
@@ -57,20 +59,41 @@ class WeightedGraph {
                 "\n\ndistance\n", distances,
                 "\n\nprevious\n", previous);
         }
+        // ===================================== a
+
+
 
         // menentukan panjang path yg dikunjungi
+        // ===================================== b
         while (nodes.values.length) {
+            // ===================================== b
+
+            console.log("\n\nWhile\n===================================================");
+            console.log("\n\nnode value\n", nodes.values.length, Boolean(nodes.values.length));
+
+            // ===================================== c
             smallest = nodes.dequeue().val;
-            console.log(nodes)
-            console.log(smallest === finish, smallest, finish)
+            // ===================================== c
+
+
+            console.log("\n\nNodes=======================\n", nodes)
+            console.log("\n\nsmallest\n", smallest === finish, smallest, finish)
+            console.log("\n\nPrevious\n", previous)
+            console.log("\n\ndistances\n", distances)
+            console.log("\n\nadjacencyList\n", this.adjacencyList)
+
+            // ===================================== d
             if (smallest === finish) {
                 // selesai sampai tujuan mengembalikan nilai terekhir
                 while (previous[smallest]) {
                     path.push(smallest);
                     smallest = previous[smallest];
                 }
+                console.log("break====================================");
                 break;
             }
+            // ===================================== d
+
             if (smallest || distances[smallest] !== Infinity) {
                 for (let neighbor in this.adjacencyList[smallest]) {
                     //  mencari tetangga dari node
@@ -89,7 +112,7 @@ class WeightedGraph {
                 }
             }
         }
-
+        console.log("=====================", path)
         console.log(nodes.values);
         console.log(path, smallest);
         return path.concat(smallest).reverse();
@@ -100,10 +123,10 @@ class WeightedGraph {
 const graph = new WeightedGraph();
 
 // 1. 
-graph.addVertex("A")
-graph.addVertex("B")
-graph.addVertex("C")
-graph.addVertex("D")
+graph.addVertex("A");
+graph.addVertex("B");
+graph.addVertex("C");
+graph.addVertex("D");
 
 // 2.
 graph.addEdge("A", "B", 1);
